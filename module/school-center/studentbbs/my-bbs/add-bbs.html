@@ -1,0 +1,166 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../../../css/feedback.css" rel="stylesheet" />
+		<link href="../../../../css/public.css" rel="stylesheet" />
+	</head>
+	<style>
+	.module_lay{
+			width: 100%;
+			/*height: 100%;*/
+			position: absolute;
+			top:0;
+			left:0;
+			overflow: hidden;
+			padding-top: 44px;
+			/*background-color: #ecf1f5;*/
+			z-index: 3;
+		}
+	
+	.mui-input-group .mui-input-row:after{
+		left:0;
+	}
+	.mui-table-view-cell a em{
+		display: inline-block;
+		width:20px;
+		height:20px;
+		background-size: 100% 100%;
+		vertical-align: -3px;
+		margin-right:4px;
+	} 
+
+	.mui-navigate-right:after, .mui-push-right:after{
+		right:10px;
+	}
+	.mui-input-row label,.mui-input-row input,.mui-input-row select{
+		font-size: 14px;
+		font-family: "微软雅黑";
+		color: #000;
+	}
+	.mui-btn{
+		border:0;
+	}
+	.mui-input-row select{
+		color: #999999;
+	}
+	.addpic{
+		margin: 10px 0 10px 15px;
+		width: 40px;
+		height:40px;
+		display:inline-block;
+		background:url(../../../../img/addimg.png) no-repeat center center;
+		background-size: 100% 100%;
+	}
+	.picbox ul{
+		padding:0 15px;
+	}
+	.picbox ul li{
+		width: 50%;
+		float: left;
+	}
+	.picbox ul li img{
+		width:100%;
+		height: 100px;
+	}
+	.picbox button{
+		background-color: #ccc;
+		margin-left: 15px;
+		margin-bottom: 15px;
+	}
+	
+	
+	</style>
+		<script src="../../../../js/jquery-1.7.2.min.js"></script>
+		<script src="../../../../js/mui.min.js"></script>
+		<script src="../../../../js/vue.min.js" type="text/javascript"></script>
+		<script src="../../../../js/modules_config.js"></script>
+		<script src=" ../../../../js/feedback.js" type="text/javascript"></script>
+		
+		<script src="../../../../js/public.js"></script>
+		<script src="../../../../module/school-center/studentbbs/my-bbs/add-bbs.js"></script>
+		<script type="text/javascript">
+			//mui.init()
+			//console.log(mui.get_params("appcenter"));
+		</script>
+	<body>
+		
+		<div class="mui-inner-wrap">
+			<header class="mui-bar mui-bar-nav">
+				<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+				<a class="mui-btn mui-pull-right" v-on:click="submit">发帖</a>
+				<h1 id="title" class="mui-title" v-text="title"></h1>
+			</header>
+
+				
+			<div class="module_lay" id="offCanvasContentScroll">
+				<form class="mui-input-group">
+						<div class="mui-input-row">
+							<label>标题：</label>
+							<input type="text" placeholder="请输入标题" v-model="record.title">
+						</div>
+						<div class="mui-input-row">
+							<a class="mui-navigate-right" >
+								<label>所属版块：</label>
+								<select name="bk" id="bk" v-model="record.sectorId">
+									<option selected>选择版块</option>
+									<option v-for="v in types" value="{{v.id}}">{{v.title}}</option>
+								</select>
+							</a>
+						</div>
+						<div class="mui-input-row">
+							<label>内容：</label>
+							<input type="text" placeholder="请输入内容" v-model="record.content">
+						</div>
+						<!--<p>图片(选填,提供问题截图,总大小10M以下)</p>-->
+						<!--<div id='image-list' class="row image-list"></div>-->
+						<div id="app">
+				            <div>
+				                <a id='addPic' href="" v-on:click="addPic" class="addpic"></a>
+				                <input type="file" @change="onFileChange" multiple style="display: none;">
+				            </div>
+				            <div v-if="images.length >0" class="picbox">
+				               <ul class="clear">
+				                  <li v-for="(key,image) in images">
+				                     <img :src="image"/>
+				                     <a href="#" style="position: absolute;" @click='delImage(key)'>
+				                        <span class="glyphicon glyphicon-remove"></span>
+				                    </a>
+				                  </li>
+				               </ul>
+				                <button @click="removeImage" class="mui-btn mui-mui-primary">移除全部图片</button>
+				                <button @click='uploadImage' class="mui-btn mui-mui-primary">上传</button>
+				            </div>
+				        </div>
+			   </form>
+			   
+				
+			</div>				
+			
+		</div>
+		
+		<script type="text/javascript">
+			
+			mui('#offCanvasContentScroll').scroll();
+//			@click='delImage(key)' 
+			
+//			mui.init({
+//				swipeBack: true //启用右滑关闭功能
+//			});
+//			
+//			mui('body').on('shown', '.mui-popover', function(e) {
+//				//console.log('shown', e.detail.id);//detail为当前popover元素
+//			});
+//			mui('body').on('hidden', '.mui-popover', function(e) {
+//				//console.log('hidden', e.detail.id);//detail为当前popover元素
+//			});
+
+		
+		</script>
+	</body>
+
+</html>

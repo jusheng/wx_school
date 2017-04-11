@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../../../css/mui.min.css">
+	</head>
+	<style type="text/css">
+	.module_lay{
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			top:0;
+			left:0;
+			overflow: hidden;
+			padding-top: 44px;
+			background-color: #ecf1f5;
+			z-index: 3;
+		}
+	.mui-card .mui-table-view .mui-table-view-cell{
+		background-color: #fff;
+		padding:11px 12px;
+		overflow: visible;
+		
+	}
+	.mui-card .mui-table-view .mui-table-view-cell:first-child, .mui-card .mui-table-view .mui-table-view-divider:first-child{
+		border-top-right-radius: 0;
+		border-top-left-radius:0;
+	}
+	.mui-card{
+		background: none;
+		box-shadow:none;
+		margin:0;
+	}
+	.mui-card .mui-table-view{
+		background: none;
+		border-radius: 0;
+	}
+	
+	.mui-table-view-cell:after{
+		left:0;
+	}
+	.mui-ellipsis{
+		margin:3px 0!important;
+		color: #646464;
+	}
+	.mui-table-view-cell.mui-collapse>.mui-navigate-right:after, .mui-table-view-cell.mui-collapse>.mui-push-right:after{
+		right:10px;
+		content:'\e583';
+	}
+	.mui-row{
+		padding-right: 15px;
+	}
+	.mui-table-view-cell.mui-collapse .mui-collapse-content{
+		margin:11px -12px -11px;
+		background: rgba(43,50,69,0.9);
+		color:#fff;
+		padding:0 10px;
+	}
+	.subjects{
+		margin:3px 0;
+		display: inline-block;
+	}
+	.subjectlist:nth-child(3n+2){
+		text-align: center;
+	}
+	.subjectlist:nth-child(3n){
+		text-align: right;
+	}
+	.mui-card .mui-table-view .mui-table-view-cell:last-child, .mui-card .mui-table-view .mui-table-view-divider:last-child{
+		border-radius: 0;
+	}
+	.mui-table-view-cell .mui-navigate-right>.mui-badge{
+		left:15px;
+		right:initial;
+		color:#fff;
+	}
+	.mui-table-view-cell:first-child .mui-navigate-right>.mui-badge{
+		background-color: #f17b30;
+	}
+	.mui-table-view-cell:nth-child(2) .mui-navigate-right>.mui-badge{
+		background-color: #f8c660;
+	}
+	.mui-table-view-cell:nth-child(3) .mui-navigate-right>.mui-badge{
+		background-color: #63c7f4;
+	}
+	.mui-table-view-cell>a:not(.mui-btn){
+		padding-left: 38px;
+		padding-right:32px;
+	}
+	</style>
+	<body>
+		<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<div class="mui-card">
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell openWindow" v-for="v in data" id="news-details" data-params="{{v.id}}">
+							<a class="mui-navigate-right">
+		                    <span class="mui-badge">{{$index+1}}</span>
+		                    {{v.title}}
+		                	</a>
+						</li>
+
+					</ul>
+				</div>
+			</div>
+		</div> 
+		<script src="../../../../js/mui.min.js"></script>
+		<script src="../../../../js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../../js/modules_config.js"></script>
+		<script src="../../../../js/public.js"></script>
+		
+		<script>
+
+			mui.init({
+				pullRefresh: {
+					container: '#pullrefresh',
+					down: {
+						callback: pulldownRefresh
+					},
+					up: {
+						contentrefresh: '正在加载...',
+						callback: pullupRefresh
+					}
+				}
+			});
+			
+			var v = new Vue({
+				el:".mui-table-view",
+				data:{
+					data:""
+				}
+			});
+
+			/**
+			 * 下拉刷新具体业务实现
+			 */
+			function pulldownRefresh() {
+			
+				setTimeout(function() {
+					count = 0;
+					
+					var success = function(result){
+						
+						v.$set('data',result.data.list);
+						mui('#pullrefresh').pullRefresh().endPulldownToRefresh(); //refresh completed
+						
+						mui('#pullrefresh').pullRefresh().endPullupToRefresh((++count == result.data.pages));
+						get_subject();
+	
+					}
+					
+					mui('#pullrefresh').pullRefresh().refresh(true);
+					
+					mui.POST("/scl/news/read/list",{"pageNum":count+1},success);
+					
+					
+				}, 1500);
+			}
+			var count = 0;
+	/**
+			 * 上拉加载具体业务实现
+			 */
+			
+			
+			function pullupRefresh() {
+				
+				setTimeout(function() {
+					
+					var success = function(result){
+						console.log(result);
+						console.log(v.$get("data"));
+						var new_data = v.$get("data")==""?result.data.list:v.$get("data").concat(result.data.list);
+						v.$set('data',new_data);
+						mui('#pullrefresh').pullRefresh().endPullupToRefresh((++count == result.data.pages));
+					}
+						
+					mui.POST("/scl/news/read/list",{"pageNum":count+1},success);
+					
+					
+				}, 1500);
+			}
+			
+				mui.ready(function() {
+				
+						mui('#pullrefresh').pullRefresh().pullupLoading();
+						
+				
+					
+					mui("#pullrefresh").on('tap', 'a', function (event) {
+						this.click();
+						//offCanvasWrapper.offCanvas('close');
+					});
+					
+				});
+			//}
+		</script>
+	</body>
+
+</html>

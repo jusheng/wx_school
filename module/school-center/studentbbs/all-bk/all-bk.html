@@ -1,0 +1,117 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../../../css/public.css" rel="stylesheet" />
+	</head>
+	<style>
+	.module_lay{
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			top:0;
+			left:0;
+			overflow: hidden;
+			padding-top: 44px;
+			background-color: #ecf1f5;
+			z-index: 3;
+		}
+	.mui-media .mui-media-object{
+			height:80px;
+			width:80px;
+			max-width:80px;
+			line-height:80px;
+	}
+	.mui-table-view{
+		margin:10px 10px 0;
+		background-color: #ecf1f5;
+	}
+	.mui-table-view-chevron .mui-table-view-cell{
+		padding-right:0;
+		border-radius: 6px;
+		margin-bottom:6px;
+		background-color: #fff;
+		padding-right:15px;
+	}
+	.mui-table-view-cell:after,.mui-table-view:after,.mui-table-view:before{
+		height:0;
+	}
+	.mui-table-view-chevron .mui-table-view-cell a.mui-listbox{
+		margin-right:0;
+		padding-right:0;
+	}
+	.mui-table-view-chevron .mui-table-view-cell>a.more{
+		position: absolute;
+		right:15px;
+		border:1px solid #969696;
+		border-radius: 3px;
+		font-size: 14px;
+		color:#969696;
+		margin:0;
+		padding:3px 6px;
+		top: 32px;
+	}
+	.mui-media-body{
+		position: relative;
+		height: 80px;
+	}
+	.mui-media-body p{
+		color:#000;
+	}
+	.mui-media-body .publishtime{
+		font-size: 12px;
+		color:#8f8f94;
+		position:absolute;
+		bottom:0;
+		width: 100%;
+	}
+	</style>
+		<script src="../../../../js/mui.min.js"></script>
+		<script src="../../../../js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../../js/modules_config.js"></script>
+		<script src="../../../../js/public.js"></script>
+		<script src="../../../../module/school-center/studentbbs/all-bk/all-bk.js"></script>
+		<script type="text/javascript">
+			//mui.init()
+			//console.log(mui.get_params("appcenter"));
+		</script>
+	<body>
+		
+		<div class="mui-inner-wrap">
+			<header class="mui-bar mui-bar-nav">
+				<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+				<h1 class="mui-title" v-on:click="submit">全部版块</h1>
+			</header>
+			<div class="module_lay" id="offCanvasContentScroll">
+				
+				<ul class="mui-table-view mui-table-view-chevron">
+				<li class="mui-table-view-cell mui-media" v-for="v in data">
+					<a href="javascript:;" class="mui-listbox openWindow" id="bk-bbs" data-params="{{v.id}},{{v.title}}">
+						<img class="mui-media-object mui-pull-left" src="{{v.imgurl}}">
+						<div class="mui-media-body">
+							<p class='mui-ellipsis'>{{v.title}}</p>
+							<p class='mui-ellipsis'>版主：<span v-for="item in v.moderatorList">{{item.name}}</span></p>
+							<p class='mui-ellipsis'>{{{v.content}}}</p>
+							<p class='mui-ellipsis publishtime'>最后更新时间：{{v.publishTime}}</p>
+						</div>
+						
+					</a>
+				</li>
+			</ul>
+			</div>				
+			
+		</div>
+
+		
+		
+		<script type="text/javascript">
+			mui('#offCanvasContentScroll').scroll();
+			
+		</script>
+	</body>
+
+</html>

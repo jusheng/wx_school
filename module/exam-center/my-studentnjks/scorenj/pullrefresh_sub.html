@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../../../css/mui.min.css">
+	</head>
+	<style type="text/css">
+	.module_lay{
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			top:0;
+			left:0;
+			overflow: hidden;
+			padding-top: 44px;
+			background-color: #ecf1f5;
+			z-index: 3;
+		}
+	.mui-card .mui-table-view .mui-table-view-cell{
+		background-color: #fff;
+		padding:11px 12px;
+		overflow: visible;
+		
+	}
+	.mui-card .mui-table-view .mui-table-view-cell:first-child, .mui-card .mui-table-view .mui-table-view-divider:first-child{
+		border-top-right-radius: 0;
+		border-top-left-radius:0;
+	}
+	.mui-card{
+		background: none;
+		box-shadow:none;
+		margin:0;
+	}
+	.mui-card .mui-table-view{
+		background: none;
+		border-radius: 0;
+	}
+	
+	.mui-table-view-cell:after{
+		left:0;
+	}
+	.mui-ellipsis{
+		margin:3px 0!important;
+		color: #646464;
+	}
+	.mui-table-view-cell.mui-collapse>.mui-navigate-right:after, .mui-table-view-cell.mui-collapse>.mui-push-right:after{
+		right:10px;
+		content:'\e583';
+	}
+	.mui-table-view-cell .mui-ellipsis em{
+		width: 20px;
+		height: 20px;
+		display: inline-block;
+		vertical-align:-4px;
+		margin-right:8px;
+	}
+	.code em{
+		background-image: url(../../../../img/s1.png);
+		background-size: 100%;
+	}
+	.name em{
+		background-image: url(../../../../img/s2.png);
+		background-size: 100%;
+	}
+	.selectbox{
+		padding:15px;
+	}
+	.selectbox select{
+		margin-bottom: 0;
+		text-align: center;
+		font-family: "微软雅黑";
+		border:1px solid #c8c8c8!important;
+	}
+	.totalScore{
+		padding:13px 0;
+	}
+	.mui-row{
+		padding-right: 15px;
+	}
+	.mui-table-view-cell.mui-collapse .mui-collapse-content{
+		margin:11px -12px -11px;
+		background: rgba(43,50,69,0.9);
+		color:#fff;
+		padding:0 10px;
+	}
+	.subjects{
+		margin:3px 0;
+		display: inline-block;
+	}
+	.subjectlist:nth-child(3n+2){
+		text-align: center;
+	}
+	.subjectlist:nth-child(3n){
+		text-align: right;
+	}
+	.mui-card .mui-table-view .mui-table-view-cell:last-child, .mui-card .mui-table-view .mui-table-view-divider:last-child{
+		border-radius: 0;
+	}
+	</style>
+	<body>
+		<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<!--数据列表-->
+				<!--<div class="selectbox">	
+					<select name="examId" id="examId" v-model="examId" onchange="change()">
+						<option v-for="v in massage" value="{{v.id}}">{{v.name}}</option>
+					</select>
+				</div>-->
+				<div class="mui-card">
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell mui-collapse" v-for="v in data" id="" data-params="{{v.id}}">
+							
+						<a class="mui-navigate-right" href="#">
+							<div class="mui-row">
+								<div class="mui-col-sm-4 mui-col-xs-4 mui-text-left"><p class="code mui-ellipsis"><em></em>{{v.student.code}}</p><p class="name mui-ellipsis"><em></em>{{v.student.name}}</p></div>
+								<div class="mui-col-sm-4 mui-col-xs-4 mui-text-center"><p class="mui-ellipsis totalScore">总分：{{v.totalScore}}</p></div>
+								<div class="mui-col-sm-4 mui-col-xs-4 mui-text-right"><p class="mui-ellipsis">班级排名：{{v.classRanking}} </p><p class="mui-ellipsis">年级排名：{{v.gradeRanking}}</p></div>
+							</div>
+						</a>
+						<div class="mui-collapse-content">
+								<div class="mui-row">
+									<div class="mui-col-sm-4 mui-col-xs-4 subjectlist" v-for="vm in subject">
+										<span class="subjects">{{vm.name}}</span>：<span class="subjects">{{v[vm.code]}}</span>
+									</div>
+								</div>
+						</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div> 
+		<script src="../../../../js/mui.min.js"></script>
+		<script src="../../../../js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../../js/modules_config.js"></script>
+		<script src="../../../../js/public.js"></script>
+		
+		<script>
+
+			mui.init({
+				pullRefresh: {
+					container: '#pullrefresh',
+					down: {
+						callback: pulldownRefresh
+					},
+					up: {
+						contentrefresh: '正在加载...',
+						callback: pullupRefresh
+					}
+				}
+			});
+			
+			var v = new Vue({
+				el:".mui-table-view",
+				data:{
+					data:""
+				}
+			});
+			var vm = new Vue({
+				el:".mui-table-view",
+				data:{
+					subject:""
+				}
+			});
+			var get_subject = function(){
+				var success = function(result){
+				console.log(result);
+				v.$set("subject",result.data);
+				//console.log(v.data);
+				}
+				var error = function(result){
+					mui.toast(result.msg);
+				}
+				mui.POST("/res/exam/score/getExamSubjects",{"examId":obj.id},success,error);
+			}
+			/**
+			 * 下拉刷新具体业务实现
+			 */
+			function pulldownRefresh() {
+			
+				setTimeout(function() {
+					count = 0;
+					
+					var success = function(result){
+						
+						v.$set('data',result.data.list);
+						mui('#pullrefresh').pullRefresh().endPulldownToRefresh(); //refresh completed
+						
+						mui('#pullrefresh').pullRefresh().endPullupToRefresh((++count == result.data.pages));
+						get_subject();
+	
+					}
+					
+					mui('#pullrefresh').pullRefresh().refresh(true);
+					
+					var param = {"pageNum":count+1,"orderBy":"er.total_score desc","examId":obj.id};
+//					if(param.pageNum==1){
+//						delete param.pageNum;
+//					}
+			
+					mui.POST("/res/exam/score/read/class/student",param,success);
+					
+					
+				}, 1500);
+			}
+			var count = 0;
+	/**
+			 * 上拉加载具体业务实现
+			 */
+			
+			
+			function pullupRefresh() {
+				
+				setTimeout(function() {
+					
+					var success = function(result){
+						console.log(result);
+						console.log(v.$get("data"));
+						var new_data = v.$get("data")==""?result.data.list:v.$get("data").concat(result.data.list);
+						v.$set('data',new_data);
+						mui('#pullrefresh').pullRefresh().endPullupToRefresh((++count == result.data.pages));
+						get_subject();
+					}
+						
+					var param = {"pageNum":count+1,"orderBy":"er.total_score desc","examId":obj.id};		
+					mui.POST("/res/exam/score/read/class/student",param,success);
+					
+					
+				}, 1500);
+			}
+
+	        
+	        var obj = {};
+			
+				mui.ready(function() {
+					window.addEventListener('message',function(event) {
+						//if(event.origin !== 'http://davidwalsh.name') return;
+						console.log('message received:  ' + event.data,event);
+						//event.source.postMessage('holla back youngin!',event.origin);
+						obj = event.data;
+						mui('#pullrefresh').pullRefresh().pullupLoading();
+						
+					},false);
+					
+					
+					mui("#pullrefresh").on('tap', 'a', function (event) {
+						this.click();
+						//offCanvasWrapper.offCanvas('close');
+					});
+					
+				});
+			//}
+		</script>
+	</body>
+
+</html>

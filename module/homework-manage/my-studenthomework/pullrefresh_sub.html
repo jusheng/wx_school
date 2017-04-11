@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../../css/mui.min.css">
+	</head>
+	<style type="text/css">
+	.module_lay{
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			top:0;
+			left:0;
+			overflow: hidden;
+			padding-top: 44px;
+			background-color: #ecf1f5;
+			z-index: 3;
+		}
+	.mui-card{
+		background: none;
+		box-shadow:none;
+		margin-left:40px;
+		overflow: visible;
+	}
+	.mui-table-view{
+		background: none;
+	}
+	.mui-table-view-cell{
+		background-color: #fff;
+		margin-bottom: 10px;
+		border-radius: 6px;
+		padding:11px 12px;
+		overflow: visible;
+	}
+	.mui-table-view-cell:after{
+		position: absolute;
+	    left: -20px;
+	    height: 209%;
+	    width:0px;
+	    content: '';
+	    -webkit-transform: scaleY(.5);
+	    transform: scaleY(.5);
+	    top: -46px;
+	    border-right:1px dashed #c8c7cc;
+	    background: none;
+	}
+	
+	.mui-table-view-cell>a.mui-listbox{
+		margin-bottom:0;
+		padding-bottom: 0;
+	}
+	
+	.mui-ellipsis span{
+		display: inline-block;
+		margin:3px 0 3px 4px;
+	}
+	
+	.mui-ellipsis em{
+		width: 20px;
+		height: 20px;
+		display: inline-block;
+		vertical-align:-4px;
+		margin-right:8px;
+	}
+
+	.subject em{
+		background-image: url(../../../img/h1.png);
+		background-size: 100%;
+	}
+	.beginDate em{
+		background-image: url(../../../img/h2.png);
+		background-size: 100%;
+	}
+	.endDate em{
+		background-image: url(../../../img/h3.png);
+		background-size: 100%;
+	}
+	.pic em{
+		background-image: url(../../../img/h4.png);
+		background-size: 100%;
+	}
+	.releaseTime em{
+		background-image: url(../../../img/h5.png);
+		background-size: 100%;
+	}
+	.look{
+		border:1px solid #8f8f94;
+		color:#8f8f94;
+		font-size: 12px;
+		height:20px;
+		line-height: 20px;
+		display: inline-block;
+		padding:0 4px;
+		font-weight: normal;
+	}
+	.mui-listbox h4{
+		font-size: 14px;
+	}
+	.list-style{
+		display: inline-block;
+		position: absolute;
+		width: 10px;
+		height:10px;
+		background: url(../../../img/h7.png) no-repeat center center;
+		background-size: 100% 100%;
+		top:40px;
+		left: -25px;
+		z-index: 999;
+	}
+	.mui-table-view-cell:nth-child(even) .list-style{
+		background: url(../../../img/h8.png) no-repeat center center;
+		background-size: 100% 100%;
+	}
+	</style>
+	<body>
+		<!--下拉刷新容器-->
+		<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<!--数据列表-->
+				<div class="mui-card">
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell openWindow" v-for="v in data" id="homework-details" data-params="{{v.id}}">
+							<a href="javascript:;" class="mui-listbox">
+								<h4>{{v.homework.title}} <span class="mui-pull-right look">查看</span></h4>
+								<p class='mui-ellipsis subject'><em></em><span>{{v.homework.subject.name}}</span></p>
+								<p class='mui-ellipsis beginDate'><em></em>开始时间:<span>{{v.beginDate}}</span></p>
+								<p class='mui-ellipsis endDate'><em></em>结束时间:<span>{{v.endDate}}</span></p>
+								<p class='mui-ellipsis pic'><em></em>是否提交:<span v-show="v.pic!=null">是</span><span v-show="v.pic==null">否</span></span></p>
+								<p class='mui-ellipsis releaseTime'><em></em>提交时间:<span>{{v.releaseTime}}</span></p>
+							</a>
+							<i class="list-style"></i>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div> 
+		<script src="../../../js/mui.min.js"></script>
+		<script src="../../../js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../js/modules_config.js"></script>
+		<script src="../../../js/public.js"></script>
+		
+		<script>
+			mui.init({
+				pullRefresh: {
+					container: '#pullrefresh',
+					down: {
+						callback: pulldownRefresh
+					},
+					up: {
+						contentrefresh: '正在加载...',
+						callback: pullupRefresh
+					}
+				}
+			});
+			
+			var v = new Vue({
+				el:".mui-table-view",
+				data:{
+					data:"",
+				}
+			});
+			
+			/**
+			 * 下拉刷新具体业务实现
+			 */
+			function pulldownRefresh() {
+			
+				setTimeout(function() {
+//					var table = document.body.querySelector('.mui-table-view');
+//					var cells = document.body.querySelectorAll('.mui-table-view-cell');
+//					for (var i = cells.length, len = i + 3; i < len; i++) {
+//						var li = document.createElement('li');
+//						li.className = 'mui-table-view-cell';
+//						li.innerHTML = '<a class="mui-navigate-right">Item ' + (i + 1) + '</a>';
+//						//下拉刷新，新纪录插到最前面；
+//						table.insertBefore(li, table.firstChild);
+//					}
+//					mui('#pullrefresh').pullRefresh().endPulldownToRefresh(); //refresh completed
+					count = 0;
+					
+					var success = function(result){
+						
+						v.$set('data',result.data.list);
+						mui('#pullrefresh').pullRefresh().endPulldownToRefresh(); //refresh completed
+						
+						mui('#pullrefresh').pullRefresh().endPullupToRefresh((++count == result.data.pages));
+						
+						
+						
+					}
+					
+					mui('#pullrefresh').pullRefresh().refresh(true);
+					
+					mui.POST("/homework/stuhomeworklist",{"pageNum":count+1},success);
+					
+					
+				}, 1500);
+			}
+			var count = 0;
+	/**
+			 * 上拉加载具体业务实现
+			 */
+			
+			
+			function pullupRefresh() {
+				
+				setTimeout(function() {
+//					mui('#pullrefresh').pullRefresh().endPullupToRefresh((++count > 2)); //参数为true代表没有更多数据了。
+//					var table = document.body.querySelector('.mui-table-view');
+//					var cells = document.body.querySelectorAll('.mui-table-view-cell');
+//					for (var i = cells.length, len = i + 20; i < len; i++) {
+//						var li = document.createElement('li');
+//						li.className = 'mui-table-view-cell';
+//						li.innerHTML = '<a class="mui-navigate-right">Item ' + (i + 1) + '</a>';
+//						table.appendChild(li);
+//					}
+					
+					var success = function(result){
+						console.log(result);
+						console.log(v.$get("data"));
+						var new_data = v.$get("data")==""?result.data.list:v.$get("data").concat(result.data.list);
+						v.$set('data',new_data);
+						mui('#pullrefresh').pullRefresh().endPullupToRefresh((++count == result.data.pages));
+					}
+						
+					mui.POST("/homework/stuhomeworklist",{"pageNum":count+1},success);
+					
+					
+				}, 1500);
+			}
+//			if (mui.os.plus) {
+//				mui.plusReady(function() {
+//					setTimeout(function() {
+//						mui('#pullrefresh').pullRefresh().pullupLoading();
+//					}, 1000);
+//
+//				});
+//			} else {
+				mui.ready(function() {
+					mui('#pullrefresh').pullRefresh().pullupLoading();
+					mui("#pullrefresh").on('tap', 'a', function (event) {
+						this.click();
+						//offCanvasWrapper.offCanvas('close');
+					});
+					
+				});
+			//}
+		</script>
+	</body>
+
+</html>

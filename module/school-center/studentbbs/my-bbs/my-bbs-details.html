@@ -1,0 +1,322 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../../../css/public.css" rel="stylesheet" />
+	</head>
+	<style>
+	.module_lay{
+			width: 100%;
+			height: auto;
+			min-height:100%;
+			position: absolute;
+			top:0;
+			left:0;
+			overflow: hidden;
+			padding-top: 44px;
+			/*background-color: #ecf1f5;*/
+			z-index: 3;
+			padding-bottom: 60px;
+		}
+	.mui-table-view{
+		background-color: #ecf1f5;
+		position: static;
+	}
+	.mui-media .mui-media-object{
+			height:60px;
+			width:60px;
+			max-width:60px;
+			line-height:60px;
+	}
+	.mui-table-view-chevron .mui-table-view-cell>a:not(.mui-btn){
+		margin-right: -15px;
+	}
+	.mui-table-view-chevron .mui-table-view-cell{
+		padding-right:15px;
+		background-color: #fff;
+	}
+	.mui-table-view-cell:after{
+		left:0;
+	}
+	.content{
+		padding-top:10px;
+		word-break: break-all;
+	}
+	.bbs-title{
+		color:#f05050;
+	}
+	.number{
+		margin-bottom: 0;
+		padding:4px 15px;
+	}
+	.formbox{
+		
+	}
+	.reply{
+		width:100%;
+		clear: both;
+		padding:6px 10px;
+		background-color: #fff;
+		position: fixed;
+		bottom:0;
+	}
+	.mui-input-row{
+		width:80%;
+		float: left;
+	}
+	.reply input{
+		margin-bottom:0;
+		background-color:#efeff4;
+		padding-left:10px;
+		padding-right:30px;
+	}
+	.reply button{
+		height:40px;
+		float: right;
+	}
+	/*.details-img{
+		width: 100%;
+		height:200px;
+		margin-top:10px;
+	}*/
+	.imgbox{
+		overflow: hidden;
+		width:100%;
+		position:relative;
+	}
+	.imgbox img{
+		position:absolute;
+		width:100%;
+		top:50%;
+		left:50%;
+		transform:translate(-50%,-50%);
+		-webkit-transform:translate(-50%,-50%);
+	}
+	
+	/*图片放大*/
+		.mui-preview-image.mui-fullscreen {
+				position: fixed;
+				z-index: 20;
+				background-color: #000;
+			}
+			.mui-preview-header,
+			.mui-preview-footer {
+				position: absolute;
+				width: 100%;
+				left: 0;
+				z-index: 10;
+			}
+			.mui-preview-header {
+				height: 44px;
+				top: 0;
+			}
+			.mui-preview-footer {
+				height: 50px;
+				bottom: 0px;
+			}
+			.mui-preview-header .mui-preview-indicator {
+				display: block;
+				line-height: 25px;
+				color: #fff;
+				text-align: center;
+				margin: 15px auto 4;
+				width: 70px;
+				background-color: rgba(0, 0, 0, 0.4);
+				border-radius: 12px;
+				font-size: 16px;
+			}
+			.mui-preview-image {
+				display: none;
+				-webkit-animation-duration: 0.5s;
+				animation-duration: 0.5s;
+				-webkit-animation-fill-mode: both;
+				animation-fill-mode: both;
+			}
+			.mui-preview-image.mui-preview-in {
+				-webkit-animation-name: fadeIn;
+				animation-name: fadeIn;
+			}
+			.mui-preview-image.mui-preview-out {
+				background: none;
+				-webkit-animation-name: fadeOut;
+				animation-name: fadeOut;
+			}
+			.mui-preview-image.mui-preview-out .mui-preview-header,
+			.mui-preview-image.mui-preview-out .mui-preview-footer {
+				display: none;
+			}
+			.mui-zoom-scroller {
+				position: absolute;
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: flex;
+				-webkit-box-align: center;
+				-webkit-align-items: center;
+				align-items: center;
+				-webkit-box-pack: center;
+				-webkit-justify-content: center;
+				justify-content: center;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				margin: 0;
+				-webkit-backface-visibility: hidden;
+			}
+			.mui-zoom {
+				-webkit-transform-style: preserve-3d;
+				transform-style: preserve-3d;
+			}
+			.mui-slider .mui-slider-group .mui-slider-item img {
+				width: auto;
+				height: auto;
+				max-width: 100%;
+				max-height: 100%;
+			}
+			.mui-android-4-1 .mui-slider .mui-slider-group .mui-slider-item img {
+				width: 100%;
+			}
+			.mui-android-4-1 .mui-slider.mui-preview-image .mui-slider-group .mui-slider-item {
+				display: inline-table;
+			}
+			.mui-android-4-1 .mui-slider.mui-preview-image .mui-zoom-scroller img {
+				display: table-cell;
+				vertical-align: middle;
+			}
+			.mui-preview-loading {
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				top: 0;
+				left: 0;
+				display: none;
+			}
+			.mui-preview-loading.mui-active {
+				display: block;
+			}
+			.mui-preview-loading .mui-spinner-white {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				margin-left: -25px;
+				margin-top: -25px;
+				height: 50px;
+				width: 50px;
+			}
+			.mui-preview-image img.mui-transitioning {
+				-webkit-transition: -webkit-transform 0.5s ease, opacity 0.5s ease;
+				transition: transform 0.5s ease, opacity 0.5s ease;
+			}
+			@-webkit-keyframes fadeIn {
+				0% {
+					opacity: 0;
+				}
+				100% {
+					opacity: 1;
+				}
+			}
+			@keyframes fadeIn {
+				0% {
+					opacity: 0;
+				}
+				100% {
+					opacity: 1;
+				}
+			}
+			@-webkit-keyframes fadeOut {
+				0% {
+					opacity: 1;
+				}
+				100% {
+					opacity: 0;
+				}
+			}
+			@keyframes fadeOut {
+				0% {
+					opacity: 1;
+				}
+				100% {
+					opacity: 0;
+				}
+			}
+			p img {
+				max-width: 100%;
+				height: auto;
+			}
+	</style>
+		<script src="../../../../js/jquery-1.7.2.min.js"></script>
+		<script src="../../../../js/mui.min.js"></script>
+		<script src="../../../../js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../../js/modules_config.js"></script>
+		<script src="../../../../js/mui.zoom.js"></script>
+		<script src="../../../../js/mui.previewimage.js"></script>
+		<script src="../../../../js/public.js"></script>
+		<script src="../../../../module/school-center/studentbbs/my-bbs/my-bbs-details.js"></script>
+		<script type="text/javascript">
+			//mui.init()
+			//console.log(mui.get_params("appcenter"));
+		</script>
+	<body>
+		
+		<div class="mui-inner-wrap">
+			<header class="mui-bar mui-bar-nav">
+				<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+				<h1 class="mui-title">帖子详情</h1>
+			</header>
+			<div class="module_lay" id="#offCanvasContentScroll">
+				<ul class="mui-table-view mui-table-view-chevron">
+					<li class="mui-table-view-cell" v-for="v in data">
+						<a href="javascript:;">
+							<img class="mui-media-object mui-pull-left" src="{{v.bbs_Info.playerImgurl}}">
+							<div class="mui-media-body">
+								<p class='mui-ellipsis bbs-title'>{{v.bbs_Info.title}}</p>
+								<p class='mui-ellipsis'>发表时间：{{v.bbs_Info.publishTime}}</p>
+							</div>
+						</a>
+						<p class="content">内容：{{{v.bbs_Info.content}}}</p>
+						<div class="imgbox" v-show="v.bbs_Info.imgurl!=null"><img class="details-img" src="{{v.bbs_Info.imgurl}}" data-preview-src="" data-preview-group="1"/></div>
+					</li>
+				</ul>
+				<p class="mui-ellipsis number">相关评论 共计{{massage.list.length}}条</p>
+				<ul class="mui-table-view mui-table-view-chevron">
+					<li class="mui-table-view-cell" v-for="v in massage.list">
+						<a href="javascript:;">
+							<img class="mui-media-object mui-pull-left" src="{{v.follow_content.playerImgurl}}">
+							<div class="mui-media-body">
+								<p class='mui-ellipsis bbs-title'>{{v.bbs_follower.name}}</p>
+								<p class='mui-ellipsis'>最后发表时间：{{v.follow_content.lastAnswerTime}}</p>
+							</div>
+						</a>
+						<p class="content">{{{v.follow_content.content}}}</p>
+						
+					</li>
+				</ul>
+			<div class="formbox">
+					<form class="reply">
+						<div class="mui-input-row">
+							<input type="text" name="text" class="mui-input-clear" placeholder="写回复" v-model="record.content">
+							
+						</div>
+						<button v-on:click="reply">发送</button>
+					</form>
+				</div>	
+			</div>				
+				
+		</div>
+
+		
+		
+		<script type="text/javascript">
+			mui.previewImage();
+			mui('#offCanvasContentScroll').scroll();
+			
+		</script>
+	</body>
+
+</html>

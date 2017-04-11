@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../../css/public.css" rel="stylesheet" />
+	</head>
+	<style>
+	.module_lay{
+			width: 100%;
+			/*height: 100%;*/
+			position: absolute;
+			top:0;
+			left:0;
+			overflow: hidden;
+			padding-top: 44px;
+			/*background-color: #ecf1f5;*/
+			z-index: 3;
+		}
+	.mui-media .mui-media-object{
+			height:60px;
+			max-width:60px;
+			line-height:60px;
+	}
+	.table-responsive{
+		padding:10px 0;
+	}
+	.table-box{
+		width:100%;
+		background-color: #fff;
+	}
+	.table-box tr:first-child td{
+		background-color: #ccc;
+	}
+	.table-box tr td{
+		border:1px solid #ddd;
+		line-height: 32px;
+		text-align: center;
+		font-size:14px;
+	}
+		
+	</style>
+		<script src="../../../js/mui.min.js"></script>
+		<script src="../../../js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../js/modules_config.js"></script>
+		<script src="../../../js/public.js"></script>
+		<script src="../../../module/school-manage/my-course/my-course.js"></script>
+		<script type="text/javascript">
+			//mui.init()
+			//console.log(mui.get_params("appcenter"));
+		</script>
+	<body>
+		
+		<div class="mui-inner-wrap">
+			<header class="mui-bar mui-bar-nav">
+				<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+				<h1 class="mui-title">课程表</h1>
+			</header>
+			<div class="module_lay" id="offCanvasContentScroll">
+					<div class="table-responsive" >                                          
+					    <table class="table table-box">
+					        <tbody> 
+					        <tr>
+					            <td class="time">时间</td>
+					            <td class="lesson">节次</td>
+					            <td class="mon">周一</td>
+					            <td class="tue">周二</td>
+					            <td class="wed">周三</td>
+					            <td class="thu">周四</td>
+					            <td class="fri">周五</td>
+					        </tr>
+					        <tr class="tr_list" v-for="v in data">
+					        	<td>{{dict[v.type]}}</td>
+					            <td class="lesson v-middle">{{v.lesson}}</td>
+					            <td class="mon v-middle">{{v.mon.name}}</td>
+					            <td class="tue v-middle">{{v.tue.name}}</td>
+					            <td class="wed v-middle">{{v.wed.name}}</td>
+					            <td class="thu v-middle">{{v.thu.name}}</td>
+					            <td class="fri v-middle">{{v.fri.name}}</td>
+					        </tr>
+					    </tbody>
+					    </table>
+					</div>
+			</div>				
+			
+		</div>
+		
+		<script type="text/javascript">
+			mui('#offCanvasContentScroll').scroll();
+			
+		</script>
+	</body>
+
+</html>

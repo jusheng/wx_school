@@ -1,0 +1,175 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../../css/public.css" rel="stylesheet" />
+	</head>
+	<style>
+	.module_lay{
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			top:0;
+			left:0;
+			overflow: hidden;
+			padding-top: 44px;
+			/*background-color: #ecf1f5;*/
+			z-index: 3;
+		}
+	.mui-media .mui-media-object{
+			height:60px;
+			width:60px;
+			max-width:60px;
+			line-height:60px;
+	}
+	.mui-table-view-chevron .mui-table-view-cell{
+		padding-right:0;
+	}
+	.mui-table-view-cell:after{
+		left:0;
+	}
+	.mui-table-view-chevron .mui-table-view-cell a.mui-listbox{
+		margin-right: 15px;
+		
+	}
+	.mui-table-view-chevron .mui-table-view-cell>a.more{
+		position: absolute;
+		right:15px;
+		border:1px solid #969696;
+		border-radius: 3px;
+		font-size: 14px;
+		color:#969696;
+		margin:0;
+		padding:3px 6px;
+		top: 32px;
+	}
+	select {
+    direction: rtl;
+    width: auto;
+    padding:0;
+    margin-bottom: 0;
+    font-family: "微软雅黑";
+	}
+	select option {
+	    direction: ltr;
+	}
+	.btnbox button{
+		display: block;
+		width: 90%;
+		margin:10px auto 0;
+		border:0;
+		color:#fff;
+		background-color:#f1c570;
+	}
+	input[type=text]{
+		border:0;
+		text-align: right;
+		font-family: "微软雅黑";
+		font-size: 14px;
+		margin-bottom: 0;
+		width: auto;
+		padding:0;
+		height:auto;
+	}
+	textarea{
+		width:80%;
+		border:0;
+		height:auto;
+		margin-bottom:0;
+		height:150px;
+		font-family: "微软雅黑";
+		font-size: 14px;
+	}
+	</style>
+		<script src="../../../js/mui.min.js"></script>
+		<script src="../../../js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../js/modules_config.js"></script>
+		<script src="../../../js/public.js"></script>
+		<script src="../../../module/school-manage/school-details/school-details.js"></script>
+		<script type="text/javascript">
+			//mui.init()
+			//console.log(mui.get_params("appcenter"));
+		</script>
+	<body>
+		
+		<div class="mui-inner-wrap">
+			<header class="mui-bar mui-bar-nav">
+				<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+				<h1 class="mui-title" v-on:click="submit">修改学校信息</h1>
+			</header>
+			<div class="module_lay" id="offCanvasContentScroll">
+				<div class="formbox">
+				<form action="">
+				<ul class="mui-table-view mui-table-view-chevron">
+					<li class="mui-table-view-cell mui-media">
+						<a href="javascript:;" class="mui-listbox">
+							<p class='mui-ellipsis'>学校名称<input type="text" class="mui-pull-right" v-model="data.name"></p>
+						</a>
+					</li>
+					<li class="mui-table-view-cell mui-media">
+						<a href="javascript:;" class="mui-listbox">
+							<p class='mui-ellipsis'>规模
+								<select name="scope" id="scope" v-model="data.scope" class="mui-pull-right">
+									<option selected>选择规模</option>
+									<option v-for="v in scopes" value="{{v.code}}">{{v.codeText}}</option>
+								</select>
+							</p>
+						</a>
+					</li>
+					<li class="mui-table-view-cell mui-media">
+						<a href="javascript:;" class="mui-listbox">
+							<p class='mui-ellipsis'>类型
+								<select name="type" id="type" v-model="data.type" class="mui-pull-right">
+									<option selected>选择类型</option>
+									<option v-for="v in types" value="{{v.code}}">{{v.codeText}}</option>
+								</select>
+							</p>
+						</a>
+					</li>
+					<li class="mui-table-view-cell mui-media">
+						<a href="javascript:;" class="mui-listbox">
+							<p class='mui-ellipsis'>性质
+								<select name="nature" id="nature" v-model="data.nature" class="mui-pull-right">
+									<option selected>选择性质</option>
+									<option v-for="v in natures" value="{{v.code}}">{{v.codeText}}</option>
+								</select>
+							</p>
+						</a>
+					</li>
+					<li class="mui-table-view-cell mui-media">
+						<a href="javascript:;" class="mui-listbox">
+							<p class='mui-ellipsis'>详细地址<input type="text" class="mui-pull-right" v-model="data.address"></p>
+						</a>
+					</li>
+					<li class="mui-table-view-cell mui-media">
+						<a href="javascript:;" class="mui-listbox">
+							<p class='mui-ellipsis'>邮编<input type="text" class="mui-pull-right" v-model="data.postalcode"></p>
+						</a>
+					</li>
+					<li class="mui-table-view-cell mui-media">
+						<a href="javascript:;" class="mui-listbox">
+							<p class='mui-ellipsis'>简介<textarea class="mui-pull-right" v-model="data.remark"></textarea></p>
+						</a>
+					</li>
+			</ul>
+			
+			</form>
+				<div class="btnbox"><button v-on:click="submit">提交</button></div>
+				</div>
+			</div>				
+			
+		</div>
+
+		
+		
+		<script type="text/javascript">
+			mui('#offCanvasContentScroll').scroll();
+			
+		</script>
+	</body>
+
+</html>

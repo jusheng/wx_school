@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="../../css/mui.min.css">
+		<link rel="stylesheet" href="../../css/public.css">
+		<link rel="stylesheet" href="../../css/font-awesome.min.css">
+		<style>
+			html,
+			body {
+				background-color: #efeff4;
+			}
+			p {
+				text-indent: 22px;
+			}
+			span.mui-icon {
+				font-size: 14px;
+				color: #007aff;
+				margin-left: -15px;
+				padding-right: 10px;
+			}
+			.mui-off-canvas-left {
+				color: #fff;
+			}
+			
+			.mui-table-view-inverted{
+				padding-bottom: 80px;
+			}
+			
+			.aside_bottom{
+				position: absolute;
+				width:70%;
+				height:81px;
+				left:0;
+				bottom:0;
+				background: #333;
+				color: #fff;
+				
+			}
+			.aside_bottom div{
+				text-align: center;
+				line-height: 25px;
+			}
+			
+			.mui-off-canvas-bottom {
+				position:absolute;
+				width: 100%;
+				left:0;
+				bottom:0
+			}
+			.title {
+				margin: 35px 15px 10px;
+			}
+			.title+.content {
+				margin: 10px 15px 35px;
+				color: #bbb;
+				text-indent: 1em;
+				font-size: 14px;
+				line-height: 24px;
+			}
+			input {
+				color: #000;
+			}
+			.mui-inner-wrap{
+				background:url(../../img/home_bg.png) no-repeat center center;
+				background-size: 100% 100%;
+			}
+			.mui-content{
+				background-color:transparent;
+			}
+			.mui-grid-view.mui-grid-9{
+				background-color:transparent;
+				border:none;
+				padding:0 2%;
+			}
+			.mui-grid-view.mui-grid-9 .mui-table-view-cell{
+				background:rgba(225,225,225,0.9);
+				border-radius:15px;
+				padding:0;
+				margin:0 0 10px;
+				width:32%;
+			}
+			.mui-grid-view.mui-grid-9 .mui-table-view-cell:nth-of-type(3n+2){
+				margin:0 2%;
+			}
+			.mui-content-padded{
+				text-align: center;
+				color:#fff;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="offCanvasWrapper" class="mui-off-canvas-wrap mui-draggable">
+			<!--侧滑菜单部分-->
+			
+			<aside id="offCanvasSide" class="mui-off-canvas-left">
+				<div id="offCanvasSideScroll" class="mui-scroll-wrapper">
+					<div class="mui-scroll">
+						<div class="content user_content">							
+							<div class="content mui-text-center">
+								<br>
+								<img v-bind:src="imgUrl" class="openWindow" id="headimg" height="50"/><br>
+								<span v-text="name"></span>
+									<p v-for="v in ownerRoles">
+										
+											<button class="mui-btn mui-btn-mini mui-btn-royal icon-ok" v-if="v.id==curRole.id" v-on:click="chage_role(v.id)" v-text="v.roleName">
+														
+											</button>
+											<button class="mui-btn mui-btn-mini icon-exchange" v-else="v.id!=curRole.id" v-on:click="chage_role(v.id)" v-text="v.roleName">
+													
+											</button>
+									</p>
+								
+							</div>
+							
+							
+						</div>
+						<ul class="mui-table-view mui-table-view-chevron mui-table-view-inverted module_lay">
+							<li class="mui-table-view-cell">
+								<a class="mui-navigate-right openWindow" id="message">
+									<h5><i class="icon-comments-alt text-warning"></i> <span>在线留言</span></h5>
+								</a>
+							</li>
+							<li class="mui-table-view-cell" >
+								<a class="mui-navigate-right openWindow" id="desk" data-params="appdesktop,我的桌面">
+									<h5><i class="icon-desktop text-success"></i> <span>我的桌面</span></h5>
+								</a>
+							</li>
+							
+							<li class="mui-table-view-cell" v-for="v in data" >
+								<a class="mui-navigate-right openWindow" id="desk" data-params="app{{v.id}},{{v.name}}">
+									<h5><i class="{{v.icon}}"></i> <span v-text="v.name"></span></h5>
+								</a>
+							</li>
+							
+						</ul>
+					</div>
+					
+				</div>
+			</aside>
+			<div class="aside_bottom box content">
+				<div class="box-flex-1 box box-align-center">
+					<span><h5><i class="icon-cog"></i><br>设置</h5></span>
+				</div>
+				<div class="box-flex-1 box box-align-center">
+					<span class="quit"><h5><i class="icon-signin"></i><br>退出</h5></span>
+				</div>
+			</div>
+			
+			
+			
+			
+			<!--主界面部分-->
+			<div class="mui-inner-wrap">
+				<header class="mui-bar mui-bar-nav">
+					<a href="#offCanvasSide" class="mui-icon mui-action-menu mui-icon-bars mui-pull-left"></a>
+					<a href="#appcenter" id="appcenter" data-params="5,中国" class="mui-icon mui-icon-list mui-pull-right openWindow"></a>
+					<h1 class="mui-title" v-text="title"></h1>
+				</header>
+				<div id="offCanvasContentScroll" class="mui-content mui-scroll-wrapper">
+					<div class="mui-scroll app_lay">
+						<div class="mui-text-center" v-if="tip!=''" v-html="tip">
+							<!--暂无桌面应用，请到应用中心添加！-->
+						</div>
+						<div class="mui-text-center" v-if="record==null">
+							<br>
+							<span class="mui-spinner"></span>
+						</div>
+						<div class="mui-content" v-for="value in record" v-else>
+							
+							<div class="mui-content-padded" v-html="re_modulename($key)"></div>
+					        <ul class="mui-table-view mui-grid-view mui-grid-9" >
+					            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3 mui-text-center" v-for="v in value">
+					            	<a  class="openWindow" id="{{v.identify}}">
+					                    <i class="mui-icon">
+					                    	<img v-bind:src="v.imgUrlApp" alt="" />
+					                    </i>
+					                    <div class="mui-media-body" v-html="v.name"></div>
+					            	</a>
+					            </li>
+					        </ul> 
+						</div>	
+						
+						
+						
+						
+						
+
+					</div>
+				</div>
+				<!-- off-canvas backdrop -->
+				<div class="mui-off-canvas-backdrop"></div>
+			</div>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/modules_config.js"></script>
+		<script src="../../js/public.js"></script>
+	
+		<script src="../../module/desk/desk.js"></script>
+		<script>
+			
+			 //侧滑容器父节点
+			var offCanvasWrapper = mui('#offCanvasWrapper');
+			 //主界面容器
+			var offCanvasInner = offCanvasWrapper[0].querySelector('.mui-inner-wrap');
+			 //菜单容器
+			var offCanvasSide = document.getElementById("offCanvasSide");
+			if (!mui.os.android) {
+				//document.getElementById("move-togger").classList.remove('mui-hidden');
+				var spans = document.querySelectorAll('.android-only');
+				for (var i = 0, len = spans.length; i < len; i++) {
+					spans[i].style.display = "none";
+				}
+			}
+			 //移动效果是否为整体移动
+			var moveTogether = false;
+			 //侧滑容器的class列表，增加.mui-slide-in即可实现菜单移动、主界面不动的效果；
+			var classList = offCanvasWrapper[0].classList;
+			 //变换侧滑动画移动效果；
+			mui('.mui-input-group').on('change', 'input', function() {
+				if (this.checked) {
+					offCanvasSide.classList.remove('mui-transitioning');
+					offCanvasSide.setAttribute('style', '');
+					classList.remove('mui-slide-in');
+					classList.remove('mui-scalable');
+					switch (this.value) {
+						case 'main-move':
+							if (moveTogether) {
+								//仅主内容滑动时，侧滑菜单在off-canvas-wrap内，和主界面并列
+								offCanvasWrapper[0].insertBefore(offCanvasSide, offCanvasWrapper[0].firstElementChild);
+							}
+							break;
+						case 'main-move-scalable':
+							if (moveTogether) {
+								//仅主内容滑动时，侧滑菜单在off-canvas-wrap内，和主界面并列
+								offCanvasWrapper[0].insertBefore(offCanvasSide, offCanvasWrapper[0].firstElementChild);
+							}
+							classList.add('mui-scalable');
+							break;
+						case 'menu-move':
+							classList.add('mui-slide-in');
+							break;
+						case 'all-move':
+							moveTogether = true;
+							//整体滑动时，侧滑菜单在inner-wrap内
+							offCanvasInner.insertBefore(offCanvasSide, offCanvasInner.firstElementChild);
+							break;
+					}
+					offCanvasWrapper.offCanvas().refresh();
+				}
+			});
+			 //主界面‘显示侧滑菜单’按钮的点击事件
+//			document.getElementById('offCanvasShow').addEventListener('tap', function() {
+//				offCanvasWrapper.offCanvas('show');
+//			});
+			 //菜单界面，‘关闭侧滑菜单’按钮的点击事件
+//			document.getElementById('offCanvasHide').addEventListener('tap', function() {
+//				offCanvasWrapper.offCanvas('close');
+//			});
+			 //主界面和侧滑菜单界面均支持区域滚动；
+			mui('#offCanvasSideScroll').scroll();
+			mui('#offCanvasContentScroll').scroll();
+			mui("#offCanvasSideScroll").on('tap', 'li', function (event) {
+				this.click();
+				//offCanvasWrapper.offCanvas('close');
+			});
+			
+			 //实现ios平台原生侧滑关闭页面；
+			if (mui.os.plus && mui.os.ios) {
+				mui.plusReady(function() { //5+ iOS暂时无法屏蔽popGesture时传递touch事件，故该demo直接屏蔽popGesture功能
+					plus.webview.currentWebview().setStyle({
+						'popGesture': 'none'
+					});
+				});
+			}
+		</script>
+	</body>
+
+</html>
+

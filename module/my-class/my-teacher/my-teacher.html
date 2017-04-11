@@ -1,0 +1,138 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../../css/public.css" rel="stylesheet" />
+	</head>
+	<style>
+	.module_lay{
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			top:0;
+			left:0;
+			overflow: hidden;
+			padding-top: 44px;
+			background-color: #ecf1f5;
+			z-index: 3;
+		}
+	.mui-media .mui-media-object{
+			height:60px;
+			width:60px;
+			max-width:60px;
+			line-height:60px;
+	}
+	.mui-table-view-chevron .mui-table-view-cell{
+		padding-right:0;
+	}
+	.mui-table-view-cell:after{
+		left:0;
+	}
+	.mui-table-view-chevron .mui-table-view-cell a.mui-listbox{
+		margin-right: 15px;
+		border-bottom: 1px solid #ddd;
+	}
+	.mui-table-view-chevron .mui-table-view-cell>a.more{
+		position: absolute;
+		right:15px;
+		border:1px solid #969696;
+		border-radius: 3px;
+		font-size: 14px;
+		color:#969696;
+		margin:0;
+		padding:3px 6px;
+		top: 32px;
+	}
+		/*.mui-table-view{
+			background-color: #ebf0f5;
+		}
+		.appitem{
+			background-color: #fff;
+			margin-bottom: 10px;
+		}
+		
+		.mui-scroll-wrapper{
+			top: 40px;
+		}
+		.inner_item{
+			line-height: 40px;
+			background-color: #fff;
+		}
+		.inner_item ul{
+			padding: 0;
+			margin: 0;
+		}
+		.inner_item li{
+			display: inline-block;
+			float:left;
+			width: 80px;
+			text-align: center;
+		}
+		.inner_item li{
+			font-size: 14px;
+			color: #222222;
+		}
+		.inner_item li.curr{
+		    border-bottom: solid #CB28D6 2px;
+		    line-height: 34px;
+		    color: #CB28D6;
+		}
+		.item_options{
+			line-height: 50px;
+		}
+		.item_options div:nth-child(1){
+			border-right: solid #ccc 1px;
+		}
+		.mui-table-view-cell:after{
+			left:0;
+		}*/
+	</style>
+		<script src="../../../js/mui.min.js"></script>
+		<script src="../../../js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../js/modules_config.js"></script>
+		<script src="../../../js/public.js"></script>
+		<script src="../../../module/my-class/my-teacher/my-teacher.js"></script>
+		<script type="text/javascript">
+			//mui.init()
+			//console.log(mui.get_params("appcenter"));
+		</script>
+	<body>
+		
+		<div class="mui-inner-wrap">
+			<header class="mui-bar mui-bar-nav">
+				<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+				<h1 class="mui-title" v-on:click="submit">任课老师</h1>
+			</header>
+			<div class="module_lay" id="offCanvasContentScroll">
+				
+				<ul class="mui-table-view mui-table-view-chevron">
+				<li class="mui-table-view-cell mui-media" v-for="v in data">
+					<a href="javascript:;" class="mui-listbox">
+						<img class="mui-media-object mui-pull-left" src="{{v.imgUrl}}">
+						<div class="mui-media-body">
+							{{v.name}} <span v-show="v.isClassTeacher==true">（班主任）</span>
+							<p>{{v.tel}}</p>
+							<p class='mui-ellipsis'>科目：{{v.subjectName1}}</p>
+						</div>
+						
+					</a>
+					<a href="javascript:;" class="more openWindow" id="teacher-details" data-params="{{v.id}}">查看详情</a>
+				</li>
+			</ul>
+			</div>				
+			
+		</div>
+
+		
+		
+		<script type="text/javascript">
+			mui('#offCanvasContentScroll').scroll();
+			
+		</script>
+	</body>
+
+</html>

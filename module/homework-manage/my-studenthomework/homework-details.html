@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../../css/public.css" rel="stylesheet" />
+	</head>
+	<style>
+	.module_lay{
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			top:0;
+			left:0;
+			overflow: hidden;
+			padding-top: 44px;
+			background-color: #ecf1f5;
+			z-index: 3;
+		}
+	.mui-card{
+		box-shadow:none;
+	}
+	.mui-table-view{
+		background-color: #fff;
+	}
+	.mui-media .mui-media-object{
+			height:60px;
+			width:60px;
+			max-width:60px;
+			line-height:60px;
+	}
+	.mui-table-view-cell:after{
+		left:0;
+	}
+	
+	.mui-badge{
+		background: none;
+		max-width: 70%;
+		padding:3px 0;
+	}
+
+	</style>
+		<script src="../../../js/mui.min.js"></script>
+		<script src="../../../js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../js/modules_config.js"></script>
+		<script src="../../../js/public.js"></script>
+		<script src="../../../module/homework-manage/my-studenthomework/homework-details.js"></script>
+		<script type="text/javascript">
+			//mui.init()
+			//console.log(mui.get_params("appcenter"));
+		</script>
+	<body>
+		
+		<div class="mui-inner-wrap">
+			<header class="mui-bar mui-bar-nav">
+				<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+				<h1 class="mui-title" v-on:click="submit">作业详情</h1>
+			</header>
+			<div class="module_lay" id="offCanvasContentScroll">
+				    <div class="mui-card">
+				        <ul class="mui-table-view" v-for="v in data">
+				            <li class="mui-table-view-cell">作业名称 <span class="mui-badge">{{v.homework.title}}</span><li>
+				            <li class="mui-table-view-cell">科目 <span class="mui-badge">{{v.homework.subject.name}}</span></li>
+				            <li class="mui-table-view-cell">要求完成时间 <span class="mui-badge">{{v.endDate}}</span></li>
+				            <li class="mui-table-view-cell">内容 <span class="mui-badge">{{{v.homework.content}}}</span></li>
+				            <li class="mui-table-view-cell">提交时间 <span class="mui-badge">{{v.releaseTime}}</span></li>
+				            <li class="mui-table-view-cell">提交内容 <span class="mui-badge"></span></li>
+				        </ul>
+				       
+				    </div>
+			</div>				
+			
+		</div>
+
+		
+		
+		<script type="text/javascript">
+			mui('#offCanvasContentScroll').scroll();
+			
+		</script>
+	</body>
+
+</html>

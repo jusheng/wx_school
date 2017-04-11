@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../../../css/mui.min.css">
+	</head>
+	<style type="text/css">
+	.mui-table-view-cell:after{
+		left:0;
+	}
+	.my-bbs{
+		color: #000;
+	}
+	</style>
+	<body>
+		<!--下拉刷新容器-->
+		<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
+			
+			<div class="mui-scroll">
+				<!--数据列表-->
+				<div class="module_lay" id="offCanvasContentScroll">
+				
+					<ul class="mui-table-view" id="OA_task_1">
+						<li class="mui-table-view-cell openWindow" v-for="v in data" id="my-bbs-details" data-params="{{v.id}}">
+							<div class="mui-slider-right mui-disabled">
+								<a class="mui-btn mui-btn-red mui-icon mui-icon-trash"></a>
+							</div>
+							<div class="mui-slider-handle">
+								<a class="mui-navigate-right my-bbs" >
+									{{v.title}}
+									<p>最后回复时间：{{v.lastAnswerTime}}</p>
+								</a>
+							</div>
+						</li>
+					</ul>
+				</div>	
+			</div>
+		</div> 
+		<script src="../../../../js/mui.min.js"></script>
+		<script src="../../../../js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../../js/modules_config.js"></script>
+		<script src="../../../../js/public.js"></script>
+		
+		<script>
+			mui.init({
+				pullRefresh: {
+					container: '#pullrefresh',
+					down: {
+						callback: pulldownRefresh
+					},
+					up: {
+						contentrefresh: '正在加载...',
+						callback: pullupRefresh
+					}
+				}
+			});
+			
+			var v = new Vue({
+				el:".mui-table-view",
+				data:{
+					data:"",
+				},
+				methods:{
+					edit:function(id){
+						
+					},
+					del:function(id){
+						
+						var _this = this;
+						var success = function(){
+							mui.toast("删除成功！");
+							var t;
+							for(var i=0; i<=_this.data.length; i++){
+								if(_this.data[i].id == id){
+									t = i;
+									break;
+								}
+							}
+							(t !=undefined) && _this.data.splice(t,1);
+						}
+						mui.POST("/scl/bbs/del/followMessage",{"bbsId":id},success);
+						
+					}
+				}
+			});
+			
+			/**
+			 * 下拉刷新具体业务实现
+			 */
+			function pulldownRefresh() {
+			
+				setTimeout(function() {
+//					var table = document.body.querySelector('.mui-table-view');
+//					var cells = document.body.querySelectorAll('.mui-table-view-cell');
+//					for (var i = cells.length, len = i + 3; i < len; i++) {
+//						var li = document.createElement('li');
+//						li.className = 'mui-table-view-cell';
+//						li.innerHTML = '<a class="mui-navigate-right">Item ' + (i + 1) + '</a>';
+//						//下拉刷新，新纪录插到最前面；
+//						table.insertBefore(li, table.firstChild);
+//					}
+//					mui('#pullrefresh').pullRefresh().endPulldownToRefresh(); //refresh completed
+					count = 0;
+					
+					var success = function(result){
+						
+						v.$set('data',result.data.list);
+						mui('#pullrefresh').pullRefresh().endPulldownToRefresh(); //refresh completed
+						
+						mui('#pullrefresh').pullRefresh().endPullupToRefresh((++count == result.data.pages));
+						
+						
+						
+					}
+					
+					mui('#pullrefresh').pullRefresh().refresh(true);
+					
+					mui.POST("/scl/bbs/read/list",{"pageNum":count+1},success);
+					
+					
+				}, 1500);
+			}
+			var count = 0;
+	/**
+			 * 上拉加载具体业务实现
+			 */
+			
+			
+			function pullupRefresh() {
+				
+				setTimeout(function() {
+//					mui('#pullrefresh').pullRefresh().endPullupToRefresh((++count > 2)); //参数为true代表没有更多数据了。
+//					var table = document.body.querySelector('.mui-table-view');
+//					var cells = document.body.querySelectorAll('.mui-table-view-cell');
+//					for (var i = cells.length, len = i + 20; i < len; i++) {
+//						var li = document.createElement('li');
+//						li.className = 'mui-table-view-cell';
+//						li.innerHTML = '<a class="mui-navigate-right">Item ' + (i + 1) + '</a>';
+//						table.appendChild(li);
+//					}
+					
+					var success = function(result){
+						console.log(result);
+						console.log(v.$get("data"));
+						var new_data = v.$get("data")==""?result.data.list:v.$get("data").concat(result.data.list);
+						v.$set('data',new_data);
+						mui('#pullrefresh').pullRefresh().endPullupToRefresh((++count == result.data.pages));
+					}
+						
+					mui.POST("/scl/bbs/read/list",{"pageNum":count+1},success);
+					
+					
+				}, 1500);
+			}
+//			if (mui.os.plus) {
+//				mui.plusReady(function() {
+//					setTimeout(function() {
+//						mui('#pullrefresh').pullRefresh().pullupLoading();
+//					}, 1000);
+//
+//				});
+//			} else {
+				mui.ready(function() {
+					mui('#pullrefresh').pullRefresh().pullupLoading();
+					mui("#pullrefresh").on('tap', 'a', function (event) {
+						this.click();
+						//offCanvasWrapper.offCanvas('close');
+					});
+					
+				});
+				//第一个demo，拖拽后显示操作图标，点击操作图标删除元素；
+			(function($) {
+				$('#OA_task_1').on('tap', '.mui-btn', function(event) {
+					var elem = this;
+					var li = elem.parentNode.parentNode;
+					mui.confirm('确认删除该条帖子？', '提示', btnArray, function(e) {
+						if (e.index == 0) {
+							li.parentNode.removeChild(li);
+						} else {
+							setTimeout(function() {
+								$.swipeoutClose(li);
+							}, 0);
+						}
+					});
+				});
+				var btnArray = ['确认', '取消'];
+			})(mui);
+		</script>
+	</body>
+
+</html>

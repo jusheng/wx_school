@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../../../css/mui.min.css">
+		<link rel="stylesheet" href="../../../../css/public.css">
+	</head>
+	<style type="text/css">
+	.banner img{
+		width:100%;
+		max-height:150px;
+	}
+	.mui-title{
+		color:#fff;
+	}
+	.listbox .c-list:last-child{
+		margin-right:0;
+	}
+	.mui-table-view.mui-grid-view .mui-table-view-cell{
+		/*padding-left:10px;*/
+	}
+	
+	.imgbox{
+		overflow: hidden;
+		width:100%;
+		position:relative;
+	}
+	.imgbox img{
+		position:absolute;
+		top:50%;
+		left:50%;
+		transform:translate(-50%,-50%);
+		-webkit-transform:translate(-50%,-50%);
+	}
+	.mui-table-view.mui-grid-view .mui-table-view-cell>a:not(.mui-btn){
+		margin:0;
+		padding:initial;
+	}
+	/*活动分类*/
+	.laybox{
+		position: relative;
+		margin:0 15px;
+		height:60px;
+		margin-top: 10px;
+		width:-moz-calc(100% - 30px);
+		width:-webkit-calc(100% - 30px);
+		width: calc(100% - 30px);
+	}
+	.module_lay{
+			width: 100%;
+			height:60px;
+			position: absolute;
+			top:0;
+			left:0;
+			overflow: hidden;
+			z-index: 3;
+		}
+		.inner_item ul{
+			padding: 0;
+			margin: 0;
+		}
+		.inner_item li{
+			display: inline-block;
+			float:left;
+			width:60px;
+			height:60px;
+			padding:14px 15px;
+			line-height: 16px;
+			text-align: center;
+			border-radius: 50%;
+			margin:0 6px;
+			text-align: center;
+			color:#fff;
+			font-size: 14px;
+		}
+	/*end*/
+	.actbox{
+		margin:10px 15px;
+	}
+	.mui-table-view.mui-grid-view{
+		padding:0;
+		background-color:#efeff4;
+	}
+	.mui-table-view:before,.mui-table-view:after{
+		height:0;
+	}
+	.mui-table-view.mui-grid-view .mui-table-view-cell{
+		padding:0;
+		border-radius: 6px 6px 0 0;
+	}
+	.mui-media{
+		padding-bottom: 10px!important;
+	}
+	.mui-table-view-cell:after{
+		height:0;
+	}
+	.mui-table-view.mui-grid-view .mui-table-view-cell .mui-media-body{
+		text-align: left;
+		background-color: #fff;
+		margin:0;
+		padding:8px 10px;
+		height:auto;
+	}
+	
+
+	/*跨webview需要手动指定位置*/
+			
+			.mui-plus header.mui-bar {
+				display: none!important;
+			}
+			.mui-plus .mui-bar-nav~.mui-content {
+				padding: 0!important;
+			}
+			
+			.mui-plus .plus{
+				display: inline;
+			}
+			
+			.plus{
+				display: none;
+			}
+			
+			#topPopover {
+				position: fixed;
+				top: 16px;
+				right: 6px;
+			}
+			#topPopover .mui-popover-arrow {
+				left: auto;
+				right: 6px;
+			}
+			span.mui-icon {
+				font-size: 14px;
+				color: #007aff;
+				margin-left: -15px;
+				padding-right: 10px;
+			}
+			.mui-popover {
+				height:174px;
+				width:120px;
+			}
+			.mui-popover .mui-table-view-cell{
+				padding:10px 15px;
+				line-height: 20px;
+			}
+			.mui-navigate-right:after{
+				right:50%;
+				margin-right:-54px;
+				content: '\e581';
+			}
+			.mui-navigate-right-on:after{
+				content: '\e580';
+			}
+			.types{
+				color:#b2b2b2;
+			}
+			
+	</style>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		<!--	<a id="menu" class="mui-action-menu mui-icon mui-icon-bars mui-pull-right" ></a>-->
+			<a id="title" class="mui-title mui-navigate-right" href="#topPopover">{{title}}</a>
+		</header>
+		<!--右上角弹出菜单-->
+		<div id="topPopover" class="mui-popover">
+			<div class="mui-popover-arrow"></div>
+			<div class="mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell types" v-for="v in types" v-on:click="get_list(v.id)"><a href="#">{{v.name}}</a><span style="display: none;">{{v.id}}</span></li>
+					</ul>
+				</div>
+			</div>
+
+		</div>
+		
+		<!--下拉刷新容器-->
+		<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<div class="mui-content">
+			    <!--数据列表-->
+					<div class="actbox">
+						<ul class="mui-table-view mui-grid-view">
+					        <li class="mui-table-view-cell mui-media mui-col-xs-12 openWindow" v-for="v in data" id="activity-details" data-params="{{v.id}}">
+					            <a href="#" >
+					                <p class="imgbox"><img class="mui-media-object" src="{{v.imgUrl}}"></p>
+					                <div class="mui-media-body">{{v.name}} <p class="line_mtop">时间：{{v.starttime}}至{{v.endtime}}</p></div>
+					            </a>
+					        </li>
+				    	</ul>
+					</div>
+				</div>
+			</div>
+		</div> 
+		<script src="../../../../js/jquery-1.7.2.min.js"></script>
+		<script src="../../../../js/mui.min.js"></script>
+		<script src="../../../../js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../../js/modules_config.js"></script>
+		<script src="../../../../js/public.js"></script>
+		<script>
+			mui.init({
+				pullRefresh: {
+					container: '#pullrefresh',
+					down: {
+						callback: pulldownRefresh
+					},
+					up: {
+						contentrefresh: '正在加载...',
+						callback: pullupRefresh
+					}
+				}
+				
+			});
+			
+			var v = new Vue({
+				el:"body",
+				data:{
+					title:"",
+					data:"",
+					types:""
+				},
+				methods:{
+//					set_curr_id:function(pid){
+//						this.curr_id = pid;
+//					},
+					get_list:function(id){
+						console.log(id);
+						pulldownRefresh(id);
+					}
+				}
+			});
+
+			var get_acttype = function(){
+						var success = function(result){						
+						v.$set("types",result.data.list);
+						}
+						var error = function(result){
+							mui.toast(result.msg);
+						}
+						mui.POST("/scl/catalog/getListOfCatalog",{},success,error);
+				}
+			get_acttype();
+			/**
+			 * 下拉刷新具体业务实现
+			 */
+			function pulldownRefresh(id) {
+			
+				setTimeout(function() {
+
+					count = 0;
+					
+					var success = function(result){
+						console.log(result);
+						v.$set('data',result.data.list);
+						
+						setTimeout(function(){
+								var aWidth=$(window).width()-30;
+								var aHeight=aWidth*0.4;
+								$(".actbox .imgbox").height(aHeight);
+							},200);
+						mui('#pullrefresh').pullRefresh().endPulldownToRefresh(); //refresh completed
+						
+						mui('#pullrefresh').pullRefresh().endPullupToRefresh((++count == result.data.pages));
+						
+					}
+					
+					mui('#pullrefresh').pullRefresh().refresh(true);
+					if(id){
+						obj.id=id;
+					}
+					
+					mui.POST("/scl/activity/getListByParam",{"pageNum":count+1,"catalogId":obj.id},success);
+					
+					
+				}, 1500);
+			}
+			var count = 0;
+	/**
+			 * 上拉加载具体业务实现
+			 */
+			function pullupRefresh() {
+				
+				setTimeout(function() {
+					var success = function(result){
+						console.log(result);
+						console.log(v.$get("data"));
+						var new_data = v.$get("data")==""?result.data.list:v.$get("data").concat(result.data.list);
+						v.$set('data',new_data);
+						v.$set("title",obj.name);
+						console.log(obj.name);
+						setTimeout(function(){
+								var aWidth=$(window).width()-30;
+								var aHeight=aWidth*0.4;
+								$(".actbox .imgbox").height(aHeight);
+							},200);
+						mui('#pullrefresh').pullRefresh().endPullupToRefresh((++count == result.data.pages));
+					}
+					
+					mui.POST("/scl/activity/getListByParam",{"pageNum":count+1,"catalogId":obj.id},success);
+					
+					
+				}, 1500);
+			}
+	var obj={};
+				mui.ready(function() {
+					window.addEventListener('message',function(event) {
+						//if(event.origin !== 'http://davidwalsh.name') return;
+//						console.log('message received:  ' + event.data,event);
+						//event.source.postMessage('holla back youngin!',event.origin);
+						obj = event.data;
+						console.log(obj);
+						
+
+						mui('#pullrefresh').pullRefresh().pullupLoading();
+						
+					},false);
+					mui("#pullrefresh").on('tap', 'a', function (event) {
+						this.click();
+						//offCanvasWrapper.offCanvas('close');
+					});
+					
+				});
+			
+			mui.init({
+				swipeBack: true //启用右滑关闭功能
+			});
+			mui('.mui-scroll-wrapper').scroll();
+			mui('body').on('shown', '.mui-popover', function(e) {
+				//console.log('shown', e.detail.id);//detail为当前popover元素
+			});
+			mui('body').on('hidden', '.mui-popover', function(e) {
+				//console.log('hidden', e.detail.id);//detail为当前popover元素
+			});
+			
+			mui(".mui-popover").on("tap","li>a",function(){
+				mui('.mui-popover').popover('hide');
+				var txt= $(this).text();
+				var id=$(this).next().text();
+				console.log(id);
+				v.$set("title",txt);
+				pulldownRefresh(id);
+			})
+			
+		</script>
+	</body>
+
+</html>

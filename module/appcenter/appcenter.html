@@ -1,0 +1,150 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/public.css" rel="stylesheet" />
+	</head>
+	<style>
+		.mui-table-view{
+			background-color: #ebf0f5;
+		}
+		.appitem{
+			background-color: #fff;
+			margin-bottom: 10px;
+		}
+		.module_lay{
+			width: 100%;
+			height: 80px;
+			position: absolute;
+			top:0;
+			left:0;
+			overflow: hidden;
+			padding-top: 44px;
+			background-color: #fff;
+			z-index: 3;
+		}
+		.mui-scroll-wrapper{
+			top: 40px;
+		}
+		.inner_item{
+			line-height: 40px;
+			background-color: #fff;
+		}
+		.inner_item ul{
+			padding: 0;
+			margin: 0;
+		}
+		.inner_item li{
+			display: inline-block;
+			float:left;
+			width: 80px;
+			text-align: center;
+		}
+		.inner_item li{
+			font-size: 14px;
+			color: #222222;
+		}
+		.inner_item li.curr{
+		    border-bottom: solid #CB28D6 2px;
+		    line-height: 34px;
+		    color: #CB28D6;
+		}
+		.item_options{
+			line-height: 50px;
+		}
+		.item_options div:nth-child(1){
+			border-right: solid #ccc 1px;
+		}
+		.mui-table-view-cell:after{
+			left:0;
+		}
+	</style>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/modules_config.js"></script>
+		<script src="../../js/public.js"></script>
+		<script src="../../module/appcenter/appcenter.js"></script>
+		<script type="text/javascript">
+			//mui.init()
+			//console.log(mui.get_params("appcenter"));
+		</script>
+	<body>
+		
+		<div class="mui-inner-wrap">
+			<header class="mui-bar mui-bar-nav">
+				<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+				<h1 class="mui-title">应用中心</h1>
+			</header>
+			<div class="module_lay">
+				<div class="inner_item" style="width:{{w}}px">
+					<ul>
+						<li v-bind:class="{'curr':curr_id==0}" v-on:click="get_app_by_module(0)">全部</li>
+						<li v-for="v in data" v-bind:class="{'curr':curr_id==v.id}" v-text="v.name" v-on:click="get_app_by_module(v.id)"></li>
+					</ul>
+				</div>
+			</div>
+			<div id="offCanvasContentScroll" class="mui-content mui-scroll-wrapper">
+					
+					<div class="mui-scroll app_lay" >
+						
+						<div class="mui-text-center" v-if="record==null">
+								<br>
+								<span class="mui-spinner"></span>
+						</div>
+						<ul class="mui-table-view applist" v-else>
+							
+							<div class="appitem" v-for="v in record">
+								<li class="mui-table-view-cell mui-media" >
+									<a href="javascript:;">
+										<img class="mui-media-object mui-pull-left" v-bind:src="v.imgUrlApp">
+										<div class="mui-media-body">
+											<span v-text="v.name"></span>
+											<p class='mui-ellipsis' v-html="v.remark"></p>
+										</div>
+									</a>
+									
+								</li>
+								<div class="mui-row item_options">
+										<div class="mui-col-sm-6 mui-col-xs-6 mui-text-center">
+										
+											<span v-if="v.deskFlag==0">
+												<p v-on:click="add_desk(v)" v-html="'添加到桌面'"></p>
+											</span>
+											<span v-else>
+												<p v-on:click="del_desk(v)" v-html="'从桌面删除'"></p>
+											</span>
+										</div>
+										<div class="mui-col-sm-6 mui-col-xs-6 mui-text-center">
+											<span v-if="v.moduleFlag==0">
+												<p v-on:click="add_module(v)" v-html="'添加到【'+v.pidNameref+'】'"></p>
+											</span>
+											<span v-else>
+												<p v-on:click="del_module(v)" v-html="'从【'+v.pidNameref+'】删除'"></p>
+											</span>
+										</div>
+								</div>
+								
+							</div>
+							
+							
+			
+						</ul>
+						
+					</div>
+			</div>
+			
+		</div>
+
+		
+		
+		<script type="text/javascript">
+			mui('#offCanvasContentScroll').scroll();
+			
+		</script>
+	</body>
+
+</html>

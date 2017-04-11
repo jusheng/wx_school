@@ -1,0 +1,143 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../../../css/feedback.css" rel="stylesheet" />
+		<link href="../../../../css/public.css" rel="stylesheet" />
+	</head>
+	<style>
+	.module_lay{
+			width: 100%;
+			/*height: 100%;*/
+			position: absolute;
+			top:0;
+			left:0;
+			overflow: hidden;
+			padding-top: 44px;
+			/*background-color: #ecf1f5;*/
+			z-index: 3;
+		}
+	
+	.mui-input-group .mui-input-row:after{
+		left:0;
+	}
+	.mui-table-view-cell a em{
+		display: inline-block;
+		width:20px;
+		height:20px;
+		background-size: 100% 100%;
+		vertical-align: -3px;
+		margin-right:4px;
+	} 
+
+	.mui-navigate-right:after, .mui-push-right:after{
+		right:10px;
+	}
+	.mui-input-row label,.mui-input-row input,.mui-input-row select{
+		font-size: 14px;
+		font-family: "微软雅黑";
+		color: #000;
+	}
+	.mui-btn{
+		border:0;
+	}
+	.mui-input-row select{
+		color: #999999;
+	}
+	.mui-input-row label,.mui-input-row input,.mui-input-row label~input, .mui-input-row label~select, .mui-input-row label~textarea{
+		width: auto!important;
+		float: left;
+	}
+	.mui-input-row label~select{
+		float: right;
+		margin-right:30px;
+		text-align: right;
+		direction: rtl;
+	}
+	</style>
+		<script src="../../../../js/jquery-1.7.2.min.js"></script>
+		<script src="../../../../js/mui.min.js"></script>
+		<script src="../../../../js/vue.min.js" type="text/javascript"></script>
+		<script src="../../../../js/modules_config.js"></script>
+		<script src=" ../../../../js/feedback.js" type="text/javascript"></script>
+		
+		<script src="../../../../js/public.js"></script>
+		<script src="../../../../module/teacher-school-center/notice-manage/my-notice-add.js"></script>
+		<script type="text/javascript">
+			//mui.init()
+			//console.log(mui.get_params("appcenter"));
+		</script>
+	<body>
+		
+		<div class="mui-inner-wrap">
+			<header class="mui-bar mui-bar-nav">
+				<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+				<!--<a class="mui-btn mui-pull-right" v-on:click="submit">发布</a>-->
+				<h1 id="title" class="mui-title" v-text="title"></h1>
+			</header>
+
+				
+			<div class="module_lay" id="offCanvasContentScroll">
+				<form class="mui-input-group">
+						<div class="mui-input-row">
+							<label>标题：</label>
+							<input type="text" placeholder="请输入标题" v-model="record.title">
+						</div>
+						<div class="mui-input-row">
+							<a class="mui-navigate-right" >
+								<label>发布状态：</label>
+								<select name="bk" id="bk" v-model="record.status" class="mui-pull-right">
+									<option selected>未发布</option>
+									<option>发布</option>
+								</select>
+							</a>
+						</div>
+						<div class="mui-input-row">
+							<a class="mui-navigate-right" >
+								<label>发布类型：</label>
+								<select name="bk" id="bk" v-model="record.sectorId">
+									<option selected>选择类型</option>
+									<option v-for="v in types" value="{{v.id}}">{{v.title}}</option>
+								</select>
+							</a>
+						</div>
+						<div class="mui-input-row">
+							<label>简介：</label>
+							<textarea type="text" placeholder="请输入简介" v-model="record.remark"></textarea>
+						</div>
+						<div class="mui-input-row">
+							<label>内容：</label>
+							<textarea type="text" placeholder="请输入内容" v-model="record.content"></textarea>
+						</div>
+			   </form>
+			   
+				
+			</div>				
+			
+		</div>
+		
+		<script type="text/javascript">
+			
+			mui('#offCanvasContentScroll').scroll();
+//			@click='delImage(key)' 
+			
+//			mui.init({
+//				swipeBack: true //启用右滑关闭功能
+//			});
+//			
+//			mui('body').on('shown', '.mui-popover', function(e) {
+//				//console.log('shown', e.detail.id);//detail为当前popover元素
+//			});
+//			mui('body').on('hidden', '.mui-popover', function(e) {
+//				//console.log('hidden', e.detail.id);//detail为当前popover元素
+//			});
+
+		
+		</script>
+	</body>
+
+</html>

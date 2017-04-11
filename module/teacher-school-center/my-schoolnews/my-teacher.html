@@ -1,0 +1,219 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../../css/public.css" rel="stylesheet" />
+	</head>
+	<style>
+	html,body{
+		height:100%;
+	}
+	.imgbox{
+		overflow: hidden;
+		width:100%;
+		position:relative;
+	}
+	.imgbox img{
+		position:absolute;
+		top:50%;
+		left:50%;
+		transform:translate(-50%,-50%);
+		-webkit-transform:translate(-50%,-50%);
+	}
+	.mui-bar .m-wenzi{
+			font-size: 16px;
+			line-height: 20px;
+			padding:12px 0;
+		}
+	.module_lay{
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			top:0;
+			left:0;
+			overflow: hidden;
+			padding-top: 44px;
+			background-color: #fff;
+			z-index: 3;
+		}
+
+	.mui-slider-group,.mui-slider,.mui-content{
+		height:100%;
+	}
+	.mui-segmented-control.mui-segmented-control-inverted .mui-control-item.mui-active{
+		color:#ec0061;
+	}
+	.mui-segmented-control.mui-segmented-control-inverted~.mui-slider-progress-bar{
+		background-color:#ec0061;
+	}
+	.mui-control-content {
+		background-color: white;
+		min-height: 215px;
+	}
+	.mui-control-content .mui-loading {
+		margin-top: 50px;
+	}
+	#slider{
+		background-color: #fff;
+	}
+	.mui-table-view{
+		margin-bottom: 50px;
+	}
+	.mui-table-view-cell{
+		padding:5px 10px;
+	}
+	.mui-table-view-cell:after{
+		height:0;
+	}
+	.mui-table-view-cell>a:not(.mui-btn){
+		padding:0;
+		margin:0;
+		border:1px solid #C8C8C8;
+	}
+	.mui-ellipsis{
+		padding:0 10px;
+	}
+	</style>
+		<script src="../../../js/jquery-1.7.2.min.js"></script>
+		<script src="../../../js/mui.min.js"></script>
+		<script src="../../../js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../js/modules_config.js"></script>
+		<script src="../../../js/public.js"></script>
+		<script src="../../../module/school-center/my-schoolnews/my-teacher.js"></script>
+		<script type="text/javascript">
+			//mui.init()
+			//console.log(mui.get_params("appcenter"));
+		</script>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">校园新闻</h1>
+			<a class="mui-pull-right m-wenzi openWindow" id="news-rank">排行</a>
+		</header>
+		<div class="mui-content">
+			<div id="slider" class="mui-slider">
+				<div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+					<a class="mui-control-item mui-active" href="#item1mobile" id="item1">全部</a>
+					<a class="mui-control-item" href="#item{{$index+2}}mobile" id="item{{$index+2}}" v-for="vm in news" >{{vm.name}} <input type="hidden" name="" id="" value="{{vm.id}}" /></a>
+				</div>
+				<div id="sliderProgressBar" class="mui-slider-progress-bar mui-col-xs-4"></div>
+				<div class="mui-slider-group">
+					<div id="item1mobile" class="mui-slider-item mui-control-content mui-active"  >
+						<div id="scroll1" class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<ul class="mui-table-view">
+										<li class="mui-table-view-cell mui-media mui-col-xs-12 openWindow" v-for="v in data" id="news-details" data-params="{{v.id}}">
+		            						<a href="#">
+		            							<p class="imgbox"><img src="{{v.imgUrl}}"></p>
+		                						<div class="mui-media-body mui-ellipsis">{{v.title}}</div>
+		                						<p class="mui-ellipsis">{{v.createTime}}</p>
+		            						</a>
+										</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					
+					
+					<div id="item{{$index+2}}mobile" class="mui-slider-item mui-control-content" v-for="v in class_num">
+						<div id="scroll{{$index+2}}" class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<ul class="mui-table-view">
+										<li class="mui-table-view-cell mui-media mui-col-xs-12 openWindow" v-for="v in data{{$index}}" id="news-details" data-params="{{v.id}}">
+		            						<a href="#">
+		            							<p class="imgbox"><img src="{{v.imgUrl}}"></p>
+		                						<div class="mui-media-body mui-ellipsis">{{v.title}}</div>
+		                						<p class="mui-ellipsis">{{v.createTime}}</p>
+		            						</a>
+										</li>
+								</ul>
+								<!--<div class="mui-loading">
+									<div class="mui-spinner">
+									</div>
+								</div>-->
+							</div>
+						</div>
+					</div>
+					
+					
+					<!--<div id="item3mobile" class="mui-slider-item mui-control-content">
+						<div id="scroll3" class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<div class="mui-loading">
+									<div class="mui-spinner">
+									</div>
+								</div>
+								
+							</div>
+						</div>
+
+					</div>-->
+				</div>
+			</div>
+		</div>
+		
+		<script>
+			mui.init({
+				swipeBack: false
+			});
+			
+			(function($) {
+				$('.mui-scroll-wrapper').scroll({
+					indicators: true //是否显示滚动条
+				});
+				var html2 = '<ul class="mui-table-view"><li class="mui-table-view-cell mui-media mui-col-xs-12" v-for="v in data"><a href="#"><img class="mui-media-object" src="{{v.imgUrl}}"><div class="mui-media-body">{{v.remark}}</div><p class="mui-ellipsis">{{v.createTime}}</p></a></li></ul>';
+				var html3 = '<ul class="mui-table-view"><li class="mui-table-view-cell">第三个选项卡子项-1</li><li class="mui-table-view-cell">第三个选项卡子项-2</li><li class="mui-table-view-cell">第三个选项卡子项-3</li><li class="mui-table-view-cell">第三个选项卡子项-4</li><li class="mui-table-view-cell">第三个选项卡子项-5</li></ul>';
+				var item2 = document.getElementById('item2mobile');
+				var item3 = document.getElementById('item3mobile');
+				
+				var it2 = document.getElementById('item2');
+				var it3 = document.getElementById('item3');
+				document.getElementById('slider').addEventListener('slide', function(e) {
+					console.log(e.detail.slideNumber);
+					
+					console.log(jQuery('#sliderSegmentedControl a').eq(e.detail.slideNumber).find('input').val());
+					
+					if(e.detail.slideNumber != 0){
+						get_data(jQuery('#sliderSegmentedControl a').eq(e.detail.slideNumber).find('input').val(),e.detail.slideNumber);
+					}
+					
+//					if (e.detail.slideNumber === 1) {
+//						if (item2.querySelector('.mui-loading')) {
+//							setTimeout(function() {
+//								console.log(vm.id);
+//								item2.querySelector('.mui-scroll').innerHTML = html2;
+//								alert(1);
+//							}, 500);
+//						}
+//					} else if (e.detail.slideNumber === 2) {
+//						if (item3.querySelector('.mui-loading')) {
+//							setTimeout(function() {
+//								item3.querySelector('.mui-scroll').innerHTML = html3;
+////								console.log(it3);
+//							}, 500);
+//						}
+//					}
+				});
+				//var sliderSegmentedControl = document.getElementById('sliderSegmentedControl');
+//				$('.mui-input-group').on('change', 'input', function() {
+//					if (this.checked) {
+//						sliderSegmentedControl.className = 'mui-slider-indicator mui-segmented-control mui-segmented-control-inverted mui-segmented-control-' + this.value;
+//						
+//						//force repaint
+//						sliderProgressBar.setAttribute('style', sliderProgressBar.getAttribute('style'));
+//					}
+//				});
+			})(mui);
+//			if($(".mui-control-item").hasClass("mui-active")){
+//				alert($(this).text());
+//				get_newssorts();
+//				}
+
+		</script>
+	</body>
+
+</html>
